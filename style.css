@@ -712,6 +712,25 @@ body {
     color: var(--text-muted);
     font-weight: 600;
 }
+
+.add-product-input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    margin-top: 4px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-color);
+    outline: none;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+.add-product-input:focus { 
+    border-color: #8b5cf6; 
+    background: rgba(255,255,255,0.1);
+}
 .status-badge {
     padding: 5px 10px;
     border-radius: 8px;

@@ -453,6 +453,32 @@ function updateOrderStatus(orderId, newStatus) {
     }
 }
 
+function addNewProduct(event) {
+    if(event) event.preventDefault();
+    
+    const name = document.getElementById('newProdName').value;
+    const emoji = document.getElementById('newProdEmoji').value;
+    const price = parseInt(document.getElementById('newProdPrice').value);
+    const stock = parseInt(document.getElementById('newProdStock').value);
+    const desc = document.getElementById('newProdDesc').value;
+    
+    const newId = shopItems.length > 0 ? Math.max(...shopItems.map(i => i.id)) + 1 : 1;
+    
+    shopItems.push({
+        id: newId,
+        name: name,
+        price: price,
+        image: emoji,
+        stock: stock,
+        description: desc
+    });
+    
+    showNotification(`Successfully added ${name}!`, 'success');
+    event.target.reset(); // clear form
+    renderShop();
+    renderAdminPanel(); // refresh lists
+}
+
 // Export functions for HTML onclick
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
@@ -464,3 +490,4 @@ window.logoutUser = logoutUser;
 window.toggleAdminView = toggleAdminView;
 window.updateStock = updateStock;
 window.updateOrderStatus = updateOrderStatus;
+window.addNewProduct = addNewProduct;

@@ -117,6 +117,34 @@
             </div>
             
             <div class="admin-grid">
+                <!-- ADD NEW PRODUCT FORM -->
+                <div class="admin-card">
+                    <h3>➕ Add New Product</h3>
+                    <form onsubmit="addNewProduct(event)">
+                        <label style="color:var(--text-muted); font-size: 0.9rem;">Product Name</label>
+                        <input type="text" class="add-product-input" id="newProdName" placeholder="e.g. Magic Sword" required>
+                        
+                        <label style="color:var(--text-muted); font-size: 0.9rem;">Product Emoji</label>
+                        <input type="text" class="add-product-input" id="newProdEmoji" placeholder="e.g. ⚔️" required>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex:1;">
+                                <label style="color:var(--text-muted); font-size: 0.9rem;">Price ($)</label>
+                                <input type="number" class="add-product-input" id="newProdPrice" placeholder="99" required min="1">
+                            </div>
+                            <div style="flex:1;">
+                                <label style="color:var(--text-muted); font-size: 0.9rem;">Stock</label>
+                                <input type="number" class="add-product-input" id="newProdStock" placeholder="10" required min="1">
+                            </div>
+                        </div>
+                        
+                        <label style="color:var(--text-muted); font-size: 0.9rem;">Description</label>
+                        <textarea class="add-product-input" id="newProdDesc" rows="2" placeholder="Product details..." required></textarea>
+                        
+                        <button type="submit" class="admin-btn" style="width: 100%; padding: 10px; font-size: 1rem; margin-top: 5px;">Add to Shop</button>
+                    </form>
+                </div>
+
                 <div class="admin-card">
                     <h3>👥 Registered Users</h3>
                     <ul class="admin-list" id="adminUserList">
