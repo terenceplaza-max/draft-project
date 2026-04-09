@@ -47,7 +47,8 @@ function addBalance(amount) {
 
 // MAIN INIT FUNCTION
 function init() {
-    console.log("VERSION 3.0 LOADED");
+    console.log("VERSION 4.0 LOADED");
+    // alert("SYSTEM UPDATED TO VERSION 4.0"); // Force notice
     // Load remembered email
     const savedEmail = localStorage.getItem('rememberedEmail');
     if (savedEmail && document.getElementById('loginEmail')) {
@@ -364,7 +365,7 @@ function handleAuth(event, type) {
     
     // GET THE EMAIL VALUE
     const emailField = document.getElementById(type + 'Email');
-    const emailInput = emailField ? emailField.value : '';
+    const emailInput = emailField ? emailField.value.trim().toLowerCase() : '';
 
     if (!emailInput) {
         showNotification('Please enter an email! 📧', 'error');
@@ -383,8 +384,9 @@ function handleAuth(event, type) {
     console.log("Attempting login for:", emailInput);
 
     setTimeout(() => {
-        if (emailInput.toLowerCase() === 'admin@admin.com') {
+        if (emailInput === 'admin@admin.com') {
             document.getElementById('adminBtn').style.display = 'block';
+            alert('Welcome Admin! Entering System...');
             showNotification('Welcome, Admin! 👑', 'success');
         } else {
             document.getElementById('adminBtn').style.display = 'none';
