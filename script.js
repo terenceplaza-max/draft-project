@@ -38,6 +38,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Main initialization completed
 });
 
+function addBalance(amount) {
+    balance += amount;
+    updateBalance();
+    saveState();
+    showNotification(`💰 +$${amount} added successfully!`, 'success');
+}
+
 // MAIN INIT FUNCTION
 function init() {
     console.log("VERSION 3.0 LOADED");
@@ -527,3 +534,4 @@ window.toggleAdminView = toggleAdminView;
 window.updateStock = updateStock;
 window.updateOrderStatus = updateOrderStatus;
 window.addNewProduct = addNewProduct;
+window.addBalance = addBalance;
