@@ -9,14 +9,24 @@
 </head>
 
 <body>
+    <!-- ANIMATED BACKGROUND SHAPES -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
     <div class="container">
         <!-- HEADER -->
         <div class="header">
             <h1 class="shop-title">🛒 Premium Shop</h1>
-            <div class="balance-container">
-                <span class="balance-emoji">💰</span>
-                <span>Balance: $<span id="balance">2500</span></span>
-                <span class="balance-amount" id="balanceAmount">2,500</span>
+            <div class="header-right">
+                <div class="balance-container">
+                    <span class="balance-emoji">💰</span>
+                    <span>Balance: $<span id="balance">2500</span></span>
+                    <span class="balance-amount" id="balanceAmount">2,500</span>
+                </div>
+                <button class="login-btn" onclick="openAuthModal()">Login / Sign Up</button>
             </div>
         </div>
 
@@ -38,6 +48,32 @@
             <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>
                 ✅ Complete Purchase
             </button>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-box">
+            <button class="close-auth" onclick="closeAuthModal()">✖</button>
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')" id="tabLogin">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Sign Up</div>
+            </div>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="input-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-submit" id="authSubmitBtn">Sign In</button>
+            </form>
         </div>
     </div>
 

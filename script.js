@@ -290,7 +290,58 @@ window.addEventListener('resize', () => {
     renderShop();
 });
 
+// AUTH LOGIC
+let isLoginMode = true;
+
+function openAuthModal() {
+    document.getElementById('authModal').classList.add('show');
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('show');
+}
+
+function switchAuthTab(mode) {
+    isLoginMode = mode === 'login';
+    document.getElementById('tabLogin').classList.toggle('active', isLoginMode);
+    document.getElementById('tabSignup').classList.toggle('active', !isLoginMode);
+    document.getElementById('nameGroup').style.display = isLoginMode ? 'none' : 'block';
+    document.getElementById('authSubmitBtn').textContent = isLoginMode ? 'Sign In' : 'Sign Up';
+}
+
+function handleAuth(event) {
+    event.preventDefault();
+    const btn = document.getElementById('authSubmitBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        const nameInput = document.getElementById('authName').value || 'User';
+        const emailInput = document.getElementById('authEmail').value;
+        const displayName = isLoginMode ? emailInput.split('@')[0] : nameInput;
+        
+        showNotification(isLoginMode ? 'Welcome back! 👋' : 'Account created! 🎉', 'success');
+        closeAuthModal();
+        
+        // Reset button
+        btn.textContent = originalText;
+        btn.disabled = false;
+        document.getElementById('authForm').reset();
+        
+        // Update header
+        const loginBtn = document.querySelector('.login-btn');
+        if(loginBtn) {
+            loginBtn.outerHTML = `<div class="user-profile">👤 ${displayName}</div>`;
+        }
+    }, 1500); // Simulate network request
+}
+
 // Export functions for HTML onclick
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.checkout = checkout;
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.switchAuthTab = switchAuthTab;
+window.handleAuth = handleAuth;
