@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // MAIN INIT FUNCTION
 function init() {
+    console.log("VERSION 3.0 LOADED");
     // Load remembered email
     const savedEmail = localStorage.getItem('rememberedEmail');
     if (savedEmail && document.getElementById('loginEmail')) {
@@ -372,6 +373,7 @@ function handleAuth(event, type) {
     }
 
     const displayName = emailInput.split('@')[0] || 'User';
+    console.log("Attempting login for:", emailInput);
 
     setTimeout(() => {
         if (emailInput.toLowerCase() === 'admin@admin.com') {
