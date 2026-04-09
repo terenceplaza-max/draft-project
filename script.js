@@ -154,12 +154,23 @@ function checkout() {
         return;
     }
 
+    // Add to orders array
+    orders.unshift({
+        id: '#ORD-' + Math.floor(Math.random() * 9000 + 1000),
+        customer: document.querySelector('.user-profile') ? document.querySelector('.user-profile').textContent.replace('👤 ', '') : 'Guest User',
+        amount: total,
+        status: 'pending'
+    });
+
     // Process purchase
     balance -= total;
     cart = [];
 
     updateBalance();
     updateCart();
+    // Re-render admin panel if visible
+    if(isAdminView) renderAdminPanel();
+    
     showNotification(`🎉 Purchase successful! Saved $${total.toLocaleString()}`, 'success');
 
     // Success effects
@@ -290,8 +301,22 @@ window.addEventListener('resize', () => {
     renderShop();
 });
 
-// AUTH LOGIC
+// AUTH LOGIC & ADMIN LOGIC
 let isLoginMode = true;
+let isAdminView = false;
+
+// Mock Data
+let users = [
+    { name: 'John Doe', email: 'john@example.com', date: '2023-10-12' },
+    { name: 'Sarah Smith', email: 'sarah@example.com', date: '2023-10-14' },
+    { name: 'Mike Ross', email: 'mike@example.com', date: '2023-10-15' }
+];
+
+let orders = [
+    { id: '#ORD-001', customer: 'John Doe', amount: 155, status: 'completed' },
+    { id: '#ORD-002', customer: 'Sarah Smith', amount: 85, status: 'pending' },
+    { id: '#ORD-003', customer: 'Mike Ross', amount: 299, status: 'cancelled' }
+];
 
 function openAuthModal() {
     document.getElementById('authModal').classList.add('show');
@@ -321,7 +346,17 @@ function handleAuth(event) {
         const emailInput = document.getElementById('authEmail').value;
         const displayName = isLoginMode ? emailInput.split('@')[0] : nameInput;
         
-        showNotification(isLoginMode ? 'Welcome back! 👋' : 'Account created! 🎉', 'success');
+        if (emailInput.toLowerCase() === 'admin@admin.com') {
+            document.getElementById('adminBtn').style.display = 'block';
+            showNotification('Welcome, Admin! 👑', 'success');
+        } else {
+            document.getElementById('adminBtn').style.display = 'none';
+            showNotification(isLoginMode ? 'Welcome back! 👋' : 'Account created! 🎉', 'success');
+            if(!isLoginMode) {
+                users.unshift({ name: displayName, email: emailInput, date: 'Just now' });
+                if(isAdminView) renderAdminPanel();
+            }
+        }
         closeAuthModal();
         
         // Reset button
@@ -337,6 +372,74 @@ function handleAuth(event) {
     }, 1500); // Simulate network request
 }
 
+function toggleAdminView() {
+    isAdminView = !isAdminView;
+    document.getElementById('shopGrid').style.display = isAdminView ? 'none' : 'grid';
+    document.querySelector('.cart-panel').style.display = isAdminView ? 'none' : 'block';
+    const bContainer = document.querySelector('.balance-container');
+    if(bContainer) bContainer.style.display = isAdminView ? 'none' : 'flex';
+    document.getElementById('adminPanel').style.display = isAdminView ? 'block' : 'none';
+    if(isAdminView) renderAdminPanel();
+}
+
+function renderAdminPanel() {
+    // Render Users
+    document.getElementById('adminUserList').innerHTML = users.map(u => `
+        <li>
+            <span><strong>${u.name}</strong><br><small>${u.email}</small></span>
+            <span style="color:#7f8c8d; font-size:0.9rem;">${u.date}</span>
+        </li>
+    `).join('');
+
+    // Render Products
+    document.getElementById('adminProductList').innerHTML = shopItems.map(item => `
+        <tr>
+            <td>${item.image} ${item.name}</td>
+            <td>$${item.price}</td>
+            <td>
+                <input type="number" value="${item.stock}" style="width: 60px; padding: 5px;" 
+                onchange="updateStock(${item.id}, this.value)">
+            </td>
+        </tr>
+    `).join('');
+
+    // Render Orders
+    document.getElementById('adminOrderList').innerHTML = orders.map(o => `
+        <tr>
+            <td><strong>${o.id}</strong></td>
+            <td>${o.customer}</td>
+            <td>$${o.amount}</td>
+            <td><span class="status-badge status-${o.status}">${o.status.toUpperCase()}</span></td>
+            <td>
+                <select class="action-select" onchange="updateOrderStatus('${o.id}', this.value)">
+                    <option value="" disabled selected>Change Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function updateStock(id, newStock) {
+    const item = shopItems.find(i => i.id === id);
+    if(item) {
+        item.stock = parseInt(newStock);
+        renderShop();
+        showNotification('Stock updated!', 'success');
+    }
+}
+
+function updateOrderStatus(orderId, newStatus) {
+    const order = orders.find(o => o.id === orderId);
+    if(order && newStatus) {
+        order.status = newStatus;
+        renderAdminPanel();
+        showNotification(`Order ${orderId} marked as ${newStatus}`, 'success');
+    }
+}
+
 // Export functions for HTML onclick
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
@@ -345,3 +448,6 @@ window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.switchAuthTab = switchAuthTab;
 window.handleAuth = handleAuth;
+window.toggleAdminView = toggleAdminView;
+window.updateStock = updateStock;
+window.updateOrderStatus = updateOrderStatus;

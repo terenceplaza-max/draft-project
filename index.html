@@ -26,6 +26,7 @@
                     <span>Balance: $<span id="balance">2500</span></span>
                     <span class="balance-amount" id="balanceAmount">2,500</span>
                 </div>
+                <button class="admin-btn" id="adminBtn" style="display: none;" onclick="toggleAdminView()">⚙️ Admin</button>
                 <button class="login-btn" onclick="openAuthModal()">Login / Sign Up</button>
             </div>
         </div>
@@ -49,6 +50,47 @@
                 ✅ Complete Purchase
             </button>
         </div>
+
+        <!-- ADMIN PANEL -->
+        <div class="admin-panel" id="adminPanel" style="display: none;">
+            <div class="admin-header">
+                <h2>👑 Admin Dashboard</h2>
+                <button class="login-btn" onclick="toggleAdminView()">Back to Shop</button>
+            </div>
+            
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3>👥 Registered Users</h3>
+                    <ul class="admin-list" id="adminUserList">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+                
+                <div class="admin-card">
+                    <h3>📦 Product Stock</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>Product</th><th>Price</th><th>Stock</th></tr>
+                        </thead>
+                        <tbody id="adminProductList">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="admin-card" style="grid-column: 1 / -1;">
+                    <h3>🛍️ Recent Orders</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="adminOrderList">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- AUTH MODAL -->
@@ -60,6 +102,9 @@
                 <div class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Sign Up</div>
             </div>
             <form id="authForm" onsubmit="handleAuth(event)">
+                <p style="text-align:center; font-size: 0.85rem; color:#e74c3c; margin-bottom:15px; font-weight: bold;">
+                    ✨ Admin Demo: Login using email "admin@admin.com"
+                </p>
                 <div class="input-group" id="nameGroup" style="display: none;">
                     <label>Full Name</label>
                     <input type="text" id="authName" placeholder="Enter your name">
