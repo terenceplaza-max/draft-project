@@ -47,7 +47,7 @@ function addBalance(amount) {
 
 // MAIN INIT FUNCTION
 function init() {
-    console.log("VERSION 4.0 LOADED");
+    console.log("VERSION 6.0 LOADED");
     // alert("SYSTEM UPDATED TO VERSION 4.0"); // Force notice
     // Load remembered email
     const savedEmail = localStorage.getItem('rememberedEmail');
@@ -257,6 +257,15 @@ function animateButtonPress(button) {
 function shakeElement(element) {
     element.style.animation = 'shake 0.5s ease';
     setTimeout(() => element.style.animation = '', 500);
+}
+
+function animatePurchaseSuccess() {
+    const app = document.getElementById('appWrapper');
+    app.style.transition = '0.3s';
+    app.style.transform = 'scale(1.02)';
+    setTimeout(() => {
+        app.style.transform = 'scale(1)';
+    }, 300);
 }
 
 function confettiEffect() {
