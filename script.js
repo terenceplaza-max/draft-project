@@ -35,15 +35,7 @@ const emptyCartEl = document.querySelector('.empty-cart');
 document.addEventListener('DOMContentLoaded', function () {
     init();
 
-    // Demo: Add coins every 8 seconds
-    setInterval(() => {
-        if (Math.random() > 0.6) {
-            const amount = Math.floor(Math.random() * 50) + 10;
-            balance += amount;
-            updateBalance();
-            showNotification(`💰 +$${amount} Coins earned!`, 'success');
-        }
-    }, 8000);
+    // Main initialization completed
 });
 
 // MAIN INIT FUNCTION
