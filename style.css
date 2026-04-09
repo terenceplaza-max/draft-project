@@ -28,10 +28,15 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 30px;
+    align-items: start;
 }
 
 /* HEADER */
 .header {
+    grid-column: 1 / -1;
     text-align: center;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -396,6 +401,16 @@ body {
 }
 
 /* RESPONSIVE */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        grid-column: 1;
+    }
+}
+
 @media (max-width: 768px) {
     .shop-grid {
         grid-template-columns: 1fr;
@@ -403,7 +418,7 @@ body {
     }
 
     .cart-panel {
-        margin-top: 20px;
+        margin-top: 0;
     }
 
     .balance-container {
