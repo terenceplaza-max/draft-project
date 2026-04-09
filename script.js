@@ -1,5 +1,5 @@
-// SHOP DATA
-const shopItems = [
+// SHOP DATA (Default)
+const defaultItems = [
     { id: 1, name: '⚡ Energy Drink', price: 35, image: '⚡', stock: 99, description: 'Instantly restores your energy levels! Perfect for late night coding.' },
     { id: 2, name: '🍔 Ultimate Burger', price: 85, image: '🍔', stock: 50, description: 'A massive triple-stack burger with our secret premium sauce.' },
     { id: 3, name: '🎮 Pro Controller', price: 199, image: '🎮', stock: 25, description: 'Gain the competitive edge with ultra-low latency and custom paddles.' },
@@ -10,9 +10,17 @@ const shopItems = [
     { id: 8, name: '🎧 Wireless Earbuds', price: 299, image: '🎧', stock: 15, description: 'Immersive noise-cancelling audio with a 24-hour battery life.' }
 ];
 
-// STATE
-let balance = 2500;
+let shopItems = JSON.parse(localStorage.getItem('shopItems')) || defaultItems;
+let balance = JSON.parse(localStorage.getItem('balance')) || 2500;
 let cart = [];
+
+// PERSISTENCE HELPER
+function saveState() {
+    localStorage.setItem('shopItems', JSON.stringify(shopItems));
+    localStorage.setItem('balance', JSON.stringify(balance));
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
 
 // DOM ELEMENTS
 const balanceEl = document.getElementById('balance');
@@ -40,6 +48,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // MAIN INIT FUNCTION
 function init() {
+    // Load remembered email
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail && document.getElementById('loginEmail')) {
+        document.getElementById('loginEmail').value = savedEmail;
+        document.getElementById('rememberMe').checked = true;
+    }
+
+    // Add a demo product if it's the very first time
+    if (!localStorage.getItem('demoAdded')) {
+        shopItems.push({
+            id: 9,
+            name: '🗡️ Master Sword',
+            price: 5000,
+            image: '🗡️',
+            stock: 1,
+            description: 'The legendary blade that seals the darkness. Extremely rare and powerful.'
+        });
+        localStorage.setItem('demoAdded', 'true');
+        saveState();
+    }
+    
     renderShop();
     updateBalance();
     updateCart();
@@ -84,6 +113,7 @@ function addToCart(itemId, btnElement) {
 
     showNotification(`${item.name} added! 🛒`, 'success');
     updateCart();
+    saveState(); // Save stock change
     animateCartShake();
     if (btnElement) {
         animateButtonPress(btnElement);
@@ -168,6 +198,7 @@ function checkout() {
 
     updateBalance();
     updateCart();
+    saveState(); // Save purchase data
     // Re-render admin panel if visible
     if(isAdminView) renderAdminPanel();
     
@@ -305,14 +336,13 @@ window.addEventListener('resize', () => {
 let isLoginMode = true;
 let isAdminView = false;
 
-// Mock Data
-let users = [
+let users = JSON.parse(localStorage.getItem('users')) || [
     { name: 'John Doe', email: 'john@example.com', date: '2023-10-12' },
     { name: 'Sarah Smith', email: 'sarah@example.com', date: '2023-10-14' },
     { name: 'Mike Ross', email: 'mike@example.com', date: '2023-10-15' }
 ];
 
-let orders = [
+let orders = JSON.parse(localStorage.getItem('orders')) || [
     { id: '#ORD-001', customer: 'John Doe', amount: 155, status: 'completed' },
     { id: '#ORD-002', customer: 'Sarah Smith', amount: 85, status: 'pending' },
     { id: '#ORD-003', customer: 'Mike Ross', amount: 299, status: 'cancelled' }
@@ -332,12 +362,14 @@ function handleAuth(event, type) {
     if(event) event.preventDefault();
     const isLoginMode = type === 'login';
     
-    // In social login cases, email input might be empty. Fallback.
-    let emailInput = 'user@example.com'; 
-    if(document.getElementById(type + 'Email')) {
-        emailInput = document.getElementById(type + 'Email').value;
+    // Handle Remember Me
+    const rememberMe = document.getElementById('rememberMe');
+    if (rememberMe && rememberMe.checked) {
+        localStorage.setItem('rememberedEmail', emailInput);
+    } else {
+        localStorage.removeItem('rememberedEmail');
     }
-    
+
     const displayName = emailInput.split('@')[0] || 'User';
 
     setTimeout(() => {
@@ -473,6 +505,7 @@ function addNewProduct(event) {
         description: desc
     });
     
+    saveState(); // Save new product permanent
     showNotification(`Successfully added ${name}!`, 'success');
     event.target.reset(); // clear form
     renderShop();
