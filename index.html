@@ -18,28 +18,55 @@
 
     <!-- AUTHENTICATION LANDING PAGE -->
     <div class="auth-landing" id="authLanding">
-        <div class="auth-box">
-            <h2 style="text-align: center; color: var(--text-color); margin-bottom: 5px; font-size: 2rem;">SCIATZY SHOP</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">Please sign in to access the store</p>
-            
-            <div class="auth-tabs">
-                <div class="auth-tab active" onclick="switchAuthTab('login')" id="tabLogin">Login</div>
-                <div class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Sign Up</div>
-            </div>
-            <form id="authForm" onsubmit="handleAuth(event)">
-                <div class="input-group" id="nameGroup" style="display: none;">
-                    <label>Full Name</label>
-                    <input type="text" id="authName" placeholder="Enter your name">
+        <!-- LOGIN FORM -->
+        <div class="auth-box white-theme" id="loginFormBox">
+            <h2 class="auth-title-custom">Login</h2>
+            <form onsubmit="handleAuth(event, 'login')">
+                <input type="email" class="auth-input" id="loginEmail" placeholder="Email" required>
+                <div class="password-wrapper">
+                    <input type="password" class="auth-input" id="loginPassword" placeholder="Password" required>
+                    <span class="password-eye" onclick="togglePassword('loginPassword')">∅</span>
                 </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="authEmail" placeholder="Enter your email" required>
+                <div class="forgot-link" onclick="alert('Demo only!')">Forgot password?</div>
+                <button type="submit" class="auth-btn-primary">Login</button>
+                <div class="auth-switch">Don't have an account? <span onclick="switchForm('signup')">Signup</span></div>
+                
+                <div class="auth-divider"><span>Or</span></div>
+                
+                <button type="button" class="auth-btn-social fb-btn" onclick="handleAuth(event, 'login')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="FB" width="16">
+                    Login with Facebook
+                </button>
+                <button type="button" class="auth-btn-social google-btn" onclick="handleAuth(event, 'login')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="16">
+                    Login with Google
+                </button>
+            </form>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div class="auth-box white-theme" id="signupFormBox" style="display: none;">
+            <h2 class="auth-title-custom">Signup</h2>
+            <form onsubmit="handleAuth(event, 'signup')">
+                <input type="email" class="auth-input" id="signupEmail" placeholder="Email" required>
+                <input type="password" class="auth-input" id="signupPassword" placeholder="Create password" required>
+                <div class="password-wrapper">
+                    <input type="password" class="auth-input" id="signupConfirmPassword" placeholder="Confirm password" required>
+                    <span class="password-eye" onclick="togglePassword('signupConfirmPassword')">∅</span>
                 </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="authPassword" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="auth-submit" id="authSubmitBtn">Sign In</button>
+                <button type="submit" class="auth-btn-primary">Signup</button>
+                <div class="auth-switch">Already have an account? <span onclick="switchForm('login')">Login</span></div>
+                
+                <div class="auth-divider"><span>Or</span></div>
+                
+                <button type="button" class="auth-btn-social fb-btn" onclick="handleAuth(event, 'signup')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="FB" width="16">
+                    Login with Facebook
+                </button>
+                <button type="button" class="auth-btn-social google-btn" onclick="handleAuth(event, 'signup')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="16">
+                    Login with Google
+                </button>
             </form>
         </div>
     </div>

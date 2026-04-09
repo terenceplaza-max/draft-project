@@ -318,26 +318,29 @@ let orders = [
     { id: '#ORD-003', customer: 'Mike Ross', amount: 299, status: 'cancelled' }
 ];
 
-function switchAuthTab(mode) {
-    isLoginMode = mode === 'login';
-    document.getElementById('tabLogin').classList.toggle('active', isLoginMode);
-    document.getElementById('tabSignup').classList.toggle('active', !isLoginMode);
-    document.getElementById('nameGroup').style.display = isLoginMode ? 'none' : 'block';
-    document.getElementById('authSubmitBtn').textContent = isLoginMode ? 'Sign In' : 'Sign Up';
+function switchForm(form) {
+    document.getElementById('loginFormBox').style.display = form === 'login' ? 'block' : 'none';
+    document.getElementById('signupFormBox').style.display = form === 'signup' ? 'block' : 'none';
 }
 
-function handleAuth(event) {
-    event.preventDefault();
-    const btn = document.getElementById('authSubmitBtn');
-    const originalText = btn.textContent;
-    btn.textContent = 'Processing...';
-    btn.disabled = true;
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function handleAuth(event, type) {
+    if(event) event.preventDefault();
+    const isLoginMode = type === 'login';
+    
+    // In social login cases, email input might be empty. Fallback.
+    let emailInput = 'user@example.com'; 
+    if(document.getElementById(type + 'Email')) {
+        emailInput = document.getElementById(type + 'Email').value;
+    }
+    
+    const displayName = emailInput.split('@')[0] || 'User';
 
     setTimeout(() => {
-        const nameInput = document.getElementById('authName').value || 'User';
-        const emailInput = document.getElementById('authEmail').value;
-        const displayName = isLoginMode ? emailInput.split('@')[0] : nameInput;
-        
         if (emailInput.toLowerCase() === 'admin@admin.com') {
             document.getElementById('adminBtn').style.display = 'block';
             showNotification('Welcome, Admin! 👑', 'success');
@@ -353,10 +356,8 @@ function handleAuth(event) {
         document.getElementById('authLanding').style.display = 'none';
         document.getElementById('appWrapper').style.display = 'block';
         
-        // Reset button
-        btn.textContent = originalText;
-        btn.disabled = false;
-        document.getElementById('authForm').reset();
+        // Reset forms
+        document.querySelectorAll('form').forEach(f => f.reset());
         
         // Update header
         const profileBadge = document.getElementById('userProfileBadge');
@@ -364,7 +365,7 @@ function handleAuth(event) {
             profileBadge.style.display = 'block';
             profileBadge.textContent = `👤 ${displayName}`;
         }
-    }, 1500); // Simulate network request
+    }, 1000); 
 }
 
 function logoutUser() {
@@ -456,7 +457,8 @@ function updateOrderStatus(orderId, newStatus) {
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.checkout = checkout;
-window.switchAuthTab = switchAuthTab;
+window.switchForm = switchForm;
+window.togglePassword = togglePassword;
 window.handleAuth = handleAuth;
 window.logoutUser = logoutUser;
 window.toggleAdminView = toggleAdminView;

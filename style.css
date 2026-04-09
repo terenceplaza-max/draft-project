@@ -470,68 +470,169 @@ body {
     background: var(--warning-gradient);
 }
 
-/* AUTH LANDING PAGE */
+/* AUTHENTICATION SCREEN PERFECT MATCH */
 .auth-landing {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-}
-.auth-box {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    background: #4A76ED; /* Clean solid blue background */
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 450px;
-    padding: 50px 40px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-hover);
-    border: 1px solid var(--glass-border);
+    height: 100%;
+    z-index: 9999;
 }
-.auth-tabs {
-    display: flex;
+
+.white-theme {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    color: #333;
+}
+
+.auth-title-custom {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 1.8rem;
     margin-bottom: 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-weight: 700;
 }
-.auth-tab {
-    flex: 1; text-align: center;
-    padding: 15px 10px; cursor: pointer;
-    font-weight: 700; font-size: 1.1rem; color: var(--text-muted);
-    border-bottom: 3px solid transparent;
-    transition: var(--transition);
+
+.auth-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    background: #fff;
+    color: #333;
+    transition: 0.3s;
 }
-.auth-tab:hover { color: var(--text-color); }
-.auth-tab.active {
-    color: #8b5cf6;
-    border-bottom: 3px solid #8b5cf6;
+
+.auth-input:focus {
+    border-color: #4A76ED;
 }
-.input-group { margin-bottom: 25px; }
-.input-group label {
-    display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); font-size: 0.95rem;
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
 }
-.input-group input {
-    width: 100%; padding: 14px 18px;
-    background: rgba(0,0,0,0.2);
-    color: var(--text-color);
-    border: 1px solid var(--glass-border); border-radius: 12px;
-    font-size: 1.05rem; outline: none; transition: var(--transition);
+
+.password-eye {
+    position: absolute;
+    right: 15px;
+    top: 14px;
+    cursor: pointer;
+    color: #888;
+    user-select: none;
+    font-size: 1.1rem;
 }
-.input-group input:focus { 
-    border-color: #8b5cf6; 
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2); 
+
+.forgot-link {
+    text-align: center;
+    color: #4A76ED;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
-.auth-submit {
-    width: 100%; padding: 16px;
-    background: var(--primary-gradient);
-    color: white; border: none; border-radius: 12px;
-    font-size: 1.2rem; font-weight: 800; cursor: pointer;
-    transition: var(--transition);
-    margin-top: 10px;
+
+.auth-btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
-.auth-submit:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); 
+
+.auth-btn-primary:hover {
+    background: #005bb5;
 }
+
+.auth-switch {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 15px;
+    color: #666;
+}
+
+.auth-switch span {
+    color: #4A76ED;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.auth-switch span:hover {
+    text-decoration: underline;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    z-index: 1;
+}
+
+.auth-divider span {
+    background: #fff;
+    padding: 0 15px;
+    color: #aaa;
+    position: relative;
+    z-index: 2;
+    font-size: 0.9rem;
+}
+
+.auth-btn-social {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.fb-btn {
+    background: #4267B2;
+    color: white;
+    border: none;
+}
+.fb-btn:hover { background: #3b5998; }
+
+.google-btn {
+    background: white;
+    color: #555;
+    border: 1px solid #ddd;
+}
+.google-btn:hover { background: #f8f9fa; }
 
 /* ANIMATIONS */
 @keyframes shake {
