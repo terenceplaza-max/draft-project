@@ -212,15 +212,16 @@ function checkout() {
 
 // BALANCE
 function updateBalance() {
-    const oldBalance = parseInt(balanceEl.textContent.replace(/,/g, '')) || 0;
+    const balanceText = balanceAmountEl ? balanceAmountEl.textContent : (balanceEl ? balanceEl.textContent : '0');
+    const oldBalance = parseInt(balanceText.replace(/,/g, '')) || 0;
 
-    balanceEl.textContent = balance.toLocaleString();
-    balanceAmountEl.textContent = balance.toLocaleString();
+    if (balanceEl) balanceEl.textContent = balance.toLocaleString();
+    if (balanceAmountEl) balanceAmountEl.textContent = balance.toLocaleString();
 
     // Animate balance change
-    if (balance > oldBalance) {
+    if (balance > oldBalance && balanceAmountEl) {
         balanceAmountEl.style.color = '#27ae60';
-        setTimeout(() => balanceAmountEl.style.color = '', 500);
+        setTimeout(() => { if(balanceAmountEl) balanceAmountEl.style.color = ''; }, 500);
     }
 }
 
