@@ -16,7 +16,37 @@
         <div class="shape shape-3"></div>
     </div>
 
-    <div class="container">
+    <!-- AUTHENTICATION LANDING PAGE -->
+    <div class="auth-landing" id="authLanding">
+        <div class="auth-box">
+            <h2 style="text-align: center; color: var(--text-color); margin-bottom: 5px; font-size: 2rem;">SCIATZY SHOP</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">Please sign in to access the store</p>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')" id="tabLogin">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Sign Up</div>
+            </div>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="input-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-submit" id="authSubmitBtn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER (HIDDEN INITIALLY) -->
+    <div class="app-wrapper" id="appWrapper" style="display: none;">
+        <div class="container">
         <!-- HEADER -->
         <div class="header">
             <h1 class="shop-title">🛒 Premium Shop</h1>
@@ -27,7 +57,8 @@
                     <span class="balance-amount" id="balanceAmount">2,500</span>
                 </div>
                 <button class="admin-btn" id="adminBtn" style="display: none;" onclick="toggleAdminView()">⚙️ Admin</button>
-                <button class="login-btn" onclick="openAuthModal()">Login / Sign Up</button>
+                <div class="user-profile" id="userProfileBadge" style="display: none;">👤 User</div>
+                <button class="login-btn" onclick="logoutUser()">Logout</button>
             </div>
         </div>
 
@@ -91,34 +122,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- AUTH MODAL -->
-    <div class="auth-modal" id="authModal">
-        <div class="auth-box">
-            <button class="close-auth" onclick="closeAuthModal()">✖</button>
-            <div class="auth-tabs">
-                <div class="auth-tab active" onclick="switchAuthTab('login')" id="tabLogin">Login</div>
-                <div class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Sign Up</div>
-            </div>
-            <form id="authForm" onsubmit="handleAuth(event)">
-                <p style="text-align:center; font-size: 0.85rem; color:#e74c3c; margin-bottom:15px; font-weight: bold;">
-                    ✨ Admin Demo: Login using email "admin@admin.com"
-                </p>
-                <div class="input-group" id="nameGroup" style="display: none;">
-                    <label>Full Name</label>
-                    <input type="text" id="authName" placeholder="Enter your name">
-                </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="authEmail" placeholder="Enter your email" required>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="authPassword" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="auth-submit" id="authSubmitBtn">Sign In</button>
-            </form>
         </div>
     </div>
 

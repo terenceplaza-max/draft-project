@@ -318,14 +318,6 @@ let orders = [
     { id: '#ORD-003', customer: 'Mike Ross', amount: 299, status: 'cancelled' }
 ];
 
-function openAuthModal() {
-    document.getElementById('authModal').classList.add('show');
-}
-
-function closeAuthModal() {
-    document.getElementById('authModal').classList.remove('show');
-}
-
 function switchAuthTab(mode) {
     isLoginMode = mode === 'login';
     document.getElementById('tabLogin').classList.toggle('active', isLoginMode);
@@ -357,7 +349,9 @@ function handleAuth(event) {
                 if(isAdminView) renderAdminPanel();
             }
         }
-        closeAuthModal();
+        
+        document.getElementById('authLanding').style.display = 'none';
+        document.getElementById('appWrapper').style.display = 'block';
         
         // Reset button
         btn.textContent = originalText;
@@ -365,11 +359,29 @@ function handleAuth(event) {
         document.getElementById('authForm').reset();
         
         // Update header
-        const loginBtn = document.querySelector('.login-btn');
-        if(loginBtn) {
-            loginBtn.outerHTML = `<div class="user-profile">👤 ${displayName}</div>`;
+        const profileBadge = document.getElementById('userProfileBadge');
+        if(profileBadge) {
+            profileBadge.style.display = 'block';
+            profileBadge.textContent = `👤 ${displayName}`;
         }
     }, 1500); // Simulate network request
+}
+
+function logoutUser() {
+    isAdminView = false;
+    document.getElementById('appWrapper').style.display = 'none';
+    document.getElementById('authLanding').style.display = 'flex';
+    
+    // Reset view
+    document.getElementById('shopGrid').style.display = 'grid';
+    document.querySelector('.cart-panel').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('adminBtn').style.display = 'none';
+    
+    const bContainer = document.querySelector('.balance-container');
+    if(bContainer) bContainer.style.display = 'flex';
+    
+    showNotification('Logged out successfully', 'success');
 }
 
 function toggleAdminView() {
@@ -444,10 +456,9 @@ function updateOrderStatus(orderId, newStatus) {
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.checkout = checkout;
-window.openAuthModal = openAuthModal;
-window.closeAuthModal = closeAuthModal;
 window.switchAuthTab = switchAuthTab;
 window.handleAuth = handleAuth;
+window.logoutUser = logoutUser;
 window.toggleAdminView = toggleAdminView;
 window.updateStock = updateStock;
 window.updateOrderStatus = updateOrderStatus;
