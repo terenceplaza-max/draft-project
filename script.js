@@ -354,11 +354,20 @@ function handleAuth(event, type) {
     if(event) event.preventDefault();
     const isLoginMode = type === 'login';
     
+    // GET THE EMAIL VALUE
+    const emailField = document.getElementById(type + 'Email');
+    const emailInput = emailField ? emailField.value : '';
+
+    if (!emailInput) {
+        showNotification('Please enter an email! 📧', 'error');
+        return;
+    }
+    
     // Handle Remember Me
     const rememberMe = document.getElementById('rememberMe');
-    if (rememberMe && rememberMe.checked) {
+    if (rememberMe && rememberMe.checked && isLoginMode) {
         localStorage.setItem('rememberedEmail', emailInput);
-    } else {
+    } else if (isLoginMode) {
         localStorage.removeItem('rememberedEmail');
     }
 
