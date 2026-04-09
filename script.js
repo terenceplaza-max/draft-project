@@ -1,13 +1,13 @@
 // SHOP DATA
 const shopItems = [
-    { id: 1, name: '⚡ Energy Drink', price: 35, image: '⚡', stock: 99 },
-    { id: 2, name: '🍔 Ultimate Burger', price: 85, image: '🍔', stock: 50 },
-    { id: 3, name: '🎮 Pro Controller', price: 199, image: '🎮', stock: 25 },
-    { id: 4, name: '👕 Premium T-Shirt', price: 65, image: '👕', stock: 75 },
-    { id: 5, name: '☕ Coffee Pack (10x)', price: 45, image: '☕', stock: 40 },
-    { id: 6, name: '📱 Phone Case', price: 129, image: '📱', stock: 30 },
-    { id: 7, name: '🥤 Smoothie Pack', price: 55, image: '🥤', stock: 60 },
-    { id: 8, name: '🎧 Wireless Earbuds', price: 299, image: '🎧', stock: 15 }
+    { id: 1, name: '⚡ Energy Drink', price: 35, image: '⚡', stock: 99, description: 'Instantly restores your energy levels! Perfect for late night coding.' },
+    { id: 2, name: '🍔 Ultimate Burger', price: 85, image: '🍔', stock: 50, description: 'A massive triple-stack burger with our secret premium sauce.' },
+    { id: 3, name: '🎮 Pro Controller', price: 199, image: '🎮', stock: 25, description: 'Gain the competitive edge with ultra-low latency and custom paddles.' },
+    { id: 4, name: '👕 Premium T-Shirt', price: 65, image: '👕', stock: 75, description: 'Comfortable, breathable, and stylish. Made from 100% organic cotton.' },
+    { id: 5, name: '☕ Coffee Pack (10x)', price: 45, image: '☕', stock: 40, description: 'Ten premium artisan coffee blends to kickstart your mornings.' },
+    { id: 6, name: '📱 Phone Case', price: 129, image: '📱', stock: 30, description: 'Military-grade drop protection with a sleek, minimalist design.' },
+    { id: 7, name: '🥤 Smoothie Pack', price: 55, image: '🥤', stock: 60, description: 'Delicious & healthy tropical smoothie mix for a refreshing boost.' },
+    { id: 8, name: '🎧 Wireless Earbuds', price: 299, image: '🎧', stock: 15, description: 'Immersive noise-cancelling audio with a 24-hour battery life.' }
 ];
 
 // STATE
@@ -30,9 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Demo: Add coins every 8 seconds
     setInterval(() => {
         if (Math.random() > 0.6) {
-            balance += Math.floor(Math.random() * 50) + 10;
+            const amount = Math.floor(Math.random() * 50) + 10;
+            balance += amount;
             updateBalance();
-            showNotification('💰 +$ Coins earned!', 'success');
+            showNotification(`💰 +$${amount} Coins earned!`, 'success');
         }
     }, 8000);
 });
@@ -54,8 +55,9 @@ function createItemCard(item) {
         <div class="item-card" data-id="${item.id}">
             <div class="item-image">${item.image}</div>
             <div class="item-name">${item.name}</div>
+            <div class="item-description">${item.description}</div>
             <div class="item-price">$${item.price.toLocaleString()}</div>
-            <button class="buy-button" onclick="addToCart(${item.id})">
+            <button class="buy-button" onclick="addToCart(${item.id}, this)">
                 Add to Cart
             </button>
         </div>
@@ -63,7 +65,7 @@ function createItemCard(item) {
 }
 
 // CART FUNCTIONS
-function addToCart(itemId) {
+function addToCart(itemId, btnElement) {
     const item = shopItems.find(i => i.id === itemId);
     if (!item || item.stock === 0) {
         showNotification('Item out of stock! ❌', 'error');
@@ -83,10 +85,19 @@ function addToCart(itemId) {
     showNotification(`${item.name} added! 🛒`, 'success');
     updateCart();
     animateCartShake();
-    animateButtonPress(event.target);
+    if (btnElement) {
+        animateButtonPress(btnElement);
+    }
 }
 
 function removeFromCart(itemId) {
+    const itemInCart = cart.find(c => c.id === itemId);
+    if (itemInCart) {
+        // Restore stock to shop item
+        const shopItem = shopItems.find(i => i.id === itemId);
+        if (shopItem) shopItem.stock += itemInCart.quantity;
+    }
+    
     cart = cart.filter(item => item.id !== itemId);
     showNotification('Item removed! ❌', 'warning');
     updateCart();
@@ -105,14 +116,7 @@ function updateCart() {
         return;
     }
 
-    // Group by item
-    const grouped = {};
-    cart.forEach(item => {
-        grouped[item.id] = grouped[item.id] || { ...item, quantity: 0 };
-        grouped[item.id].quantity++;
-    });
-
-    cartItemsEl.innerHTML = Object.values(grouped).map(item => `
+    cartItemsEl.innerHTML = cart.map(item => `
         <div class="cart-item">
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
