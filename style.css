@@ -311,10 +311,12 @@ body {
     border: 1px solid var(--glass-border);
     animation: slideUp 0.5s ease;
     
-    /* Make the cart stick to the screen as we scroll */
+    /* STICKY BEHAVIOR: Moves Up and Down with the user */
+    position: -webkit-sticky;
     position: sticky;
-    top: 20px;
-    height: fit-content;
+    top: 30px;
+    align-self: start;
+    z-index: 100;
 }
 
 @keyframes slideUp {
